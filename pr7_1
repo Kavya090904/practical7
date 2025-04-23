@@ -1,0 +1,25 @@
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+const connectDB = async () => { try {
+console.log("MongoDB URI:", process.env.MONGO_URI); await mongoose.connect(process.env.MONGO_URI); console.log("✅ MongoDB Connected...");
+} catch (error) {
+console.error("❌ MongoDB Connection Failed:", error); process.exit(1);
+}
+};
+
+module.exports = connectDB;
+
+Task.js
+const mongoose = require("mongoose");
+
+const TaskSchema = new mongoose.Schema({ title: { type: String, required: true }, description: { type: String },
+ 
+status: { type: String, enum: ["Pending", "Completed"], default: "Pending" }, dueDate: { type: Date }
+}, { timestamps: true });
+
+module.exports = mongoose.model("Task", TaskSchema);
+
+.env MONGO_URI=mongodb+srv://dhruvi:dhruvi@cluster0.mongodb.net/taskdb?retryWrites=true&w
+=majority PORT=5000
+
