@@ -1,0 +1,26 @@
+require("dotenv").conﬁg();
+const express = require("express");
+const connectDB = require("./conﬁg/db"); const User = require("./models/User");
+
+const app = express();
+const PORT = process.env.PORT || 5000; app.use(express.json());
+connectDB();
+
+
+app.post("/users", async (req, res) => { try {
+const { name, email, age } = req.body;
+ 
+const newUser = new User({ name, email, age }); const savedUser = await newUser.save(); res.status(201).json(savedUser);
+} catch (error) {
+res.status(500).json({ error: error.message });
+}
+});
+app.get("/users", async (req, res) => { try {
+const users = await User.ﬁnd(); res.status(200).json(users);
+} catch (error) {
+res.status(500).json({ error: error.message });
+}
+});
+app.listen(PORT, () => {
+console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
